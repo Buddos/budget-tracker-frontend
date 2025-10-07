@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget Tracker</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <h1>💰 Budget Tracker</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <div class="container">
+        <!-- Summary Section -->
+        <section class="summary">
+          <h2>Overview</h2>
+          <div class="totals">
+            <p>Income: KES <span id="total-income">0</span></p>
+            <p>Expense: KES <span id="total-expense">0</span></p>
+            <h3>Balance: KES <span id="balance">0</span></h3>
+          </div>
+        </section>
+
+        <!-- Form Section -->
+        <section class="form-section">
+          <h2>Add Transaction</h2>
+          <form id="transaction-form">
+            <input type="text" id="desc" placeholder="Description" required />
+            <input type="number" id="amount" placeholder="Amount" required />
+            <select id="type" required>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+            <button type="submit">Add</button>
+          </form>
+        </section>
+
+        <!-- Transactions List -->
+        <section class="list-section">
+          <h2>Transactions</h2>
+          <ul id="transaction-list"></ul>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="chart-section">
+          <h2>Statistics</h2>
+          <div class="charts">
+            <canvas id="barChart"></canvas>
+            <canvas id="pieChart"></canvas>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 Budget Tracker | Built with ❤️ by Thima Brand</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/chart.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
+
