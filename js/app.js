@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:5000/api/transactions";
+// ✅ Connect frontend to deployed backend API
+const API_URL = "https://budget-tracker-backend.onrender.com/api/transactions";
 
 const form = document.getElementById("transaction-form");
 const list = document.getElementById("transaction-list");
@@ -8,7 +9,7 @@ const balance = document.getElementById("balance");
 
 let transactions = [];
 
-// =============== Fetch Transactions ===============
+// Fetch all transactions
 async function fetchTransactions() {
   try {
     const res = await fetch(API_URL);
@@ -16,11 +17,11 @@ async function fetchTransactions() {
     transactions = data;
     updateUI();
   } catch (err) {
-    console.error("❌ Error fetching transactions:", err);
+    console.error("Error fetching transactions:", err);
   }
 }
 
-// =============== Add Transaction ===============
+// Add new transaction
 async function addTransaction(desc, amount, type) {
   try {
     await fetch(API_URL, {
@@ -30,21 +31,21 @@ async function addTransaction(desc, amount, type) {
     });
     await fetchTransactions();
   } catch (err) {
-    console.error("❌ Error adding transaction:", err);
+    console.error("Error adding transaction:", err);
   }
 }
 
-// =============== Delete Transaction ===============
+// Delete transaction
 async function deleteTransaction(id) {
   try {
     await fetch(`${API_URL}/${id}`, { method: "DELETE" });
     await fetchTransactions();
   } catch (err) {
-    console.error("❌ Error deleting transaction:", err);
+    console.error("Error deleting transaction:", err);
   }
 }
 
-// =============== Form Submission ===============
+// Handle form submission
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const desc = document.getElementById("desc").value.trim();
@@ -52,44 +53,8 @@ form.addEventListener("submit", (e) => {
   const type = document.getElementById("type").value;
 
   if (!desc || isNaN(amount)) return;
-
   addTransaction(desc, amount, type);
   form.reset();
 });
 
-// =============== Update UI ===============
-function updateUI() {
-  list.innerHTML = "";
-  let income = 0;
-  let expense = 0;
-
-  transactions.forEach((t) => {
-    const li = document.createElement("li");
-    li.textContent = `${t.description}: ${t.amount}`;
-    li.classList.add(t.type);
-
-    // Add delete button
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "❌";
-    delBtn.classList.add("delete-btn");
-    delBtn.addEventListener("click", () => deleteTransaction(t.id)); // ✅ PostgreSQL uses `id`
-    li.appendChild(delBtn);
-
-    list.appendChild(li);
-
-    if (t.type === "income") income += Number(t.amount);
-    else expense += Number(t.amount);
-  });
-
-  totalIncome.textContent = income.toFixed(2);
-  totalExpense.textContent = expense.toFixed(2);
-  balance.textContent = (income - expense).toFixed(2);
-
-  // Only call this if your Chart.js code is included
-  if (typeof updateCharts === "function") {
-    updateCharts(income, expense);
-  }
-}
-
-// =============== Initialize ===============
 fetchTransactions();
